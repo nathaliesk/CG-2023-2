@@ -2,18 +2,30 @@
 
 #include "visualize.h"
 
-Visualize::Visualize(int width, int height) : width_(width), height_(height), world_(nullptr) {
+/**
+ * @brief Construtor da classe Visualize.
+ * 
+ * @param width Largura da janela de visualização.
+ * @param height Altura da janela de visualização.
+ */
+Visualize::Visualize(int width, int height) : width_(width), height_(height) {
     SDL_Init(SDL_INIT_VIDEO);
     window_ = SDL_CreateWindow("Visualização Inicial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width_, height_, 0);
     renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 }
 
+/**
+ * @brief Destrutor da classe Visualize.
+ */
 Visualize::~Visualize() {
     SDL_DestroyRenderer(renderer_);
     SDL_DestroyWindow(window_);
     SDL_Quit();
 }
 
+/**
+ * @brief Inicia o loop de visualização.
+ */
 void Visualize::run() {
     bool quit = false;
     SDL_Event event;
@@ -25,26 +37,25 @@ void Visualize::run() {
             }
         }
 
+        // Limpar a tela
         SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
         SDL_RenderClear(renderer_);
 
-        if (world_) {
-            SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
-            for (int y = 0; y < height_; y++) {
-                for (int x = 0; x < width_; x++) {
-                    Ray r(Vec3(0,0,0), Vec3((x+0.5)/width_ - 0.5, (y+0.5)/height_ - 0.5, -1));
-                    HitRecord rec;
-                    if (world_->hit(r, 0, DBL_MAX, rec)) {
-                        SDL_RenderDrawPoint(renderer_, x, height_ - y);
-                    }
-                }
-            }
+        // Renderizar objetos do mundo
+        if (world_ != nullptr) {
+            world_->render(renderer_, width_, height_);
         }
 
+        // Atualizar a tela
         SDL_RenderPresent(renderer_);
     }
 }
 
+/**
+ * @brief Define a lista de objetos a serem visualizados.
+ * 
+ * @param world Lista de objetos a serem visualizados.
+ */
 void Visualize::setWorld(Hitable *world) {
     world_ = world;
 }

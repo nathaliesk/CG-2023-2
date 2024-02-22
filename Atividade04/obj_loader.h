@@ -11,6 +11,13 @@
 #include "triangle.h"
 
 /**
+ * @brief Definição do tipo Vertex.
+ */
+struct Vertex {
+    float x, y, z;
+};
+
+/**
  * @brief Classe para carregar modelos no formato OBJ.
  */
 class ObjLoader {

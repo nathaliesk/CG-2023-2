@@ -4,6 +4,11 @@
 #include "obj_loader.h"
 #include "visualize.h"
 
+/**
+ * @brief Função principal.
+ * 
+ * @return O código de saída do programa.
+ */
 int main() {
     ObjLoader loader;
     if (loader.loadObj("model.obj")) {

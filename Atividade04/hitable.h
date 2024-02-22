@@ -4,6 +4,7 @@
 #define HITABLE_H
 
 #include "ray.h"
+#include <SDL.h>
 
 /**
  * @brief Estrutura para representar um registro de colisão.
@@ -29,6 +30,15 @@ public:
      * @return Verdadeiro se houver interseção, falso caso contrário.
      */
     virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const = 0;
+
+    /**
+     * @brief Renderiza o objeto na tela.
+     * 
+     * @param renderer Renderizador SDL.
+     * @param width Largura da janela.
+     * @param height Altura da janela.
+     */
+    virtual void render(SDL_Renderer* renderer, int width, int height) const = 0;
 };
 
 #endif // HITABLE_H

@@ -24,6 +24,16 @@ public:
      */
     virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const override;
 
+    /**
+     * @brief Renderiza a esfera na tela.
+     * 
+     * @param renderer Renderizador SDL.
+     * @param width Largura da janela.
+     * @param height Altura da janela.
+     */
+    virtual void render(SDL_Renderer* renderer, int width, int height) const override;
+
+
 private:
     Vec3 center; ///< Centro da esfera.
     double radius; ///< Raio da esfera.
