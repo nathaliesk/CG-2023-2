@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "vec3.h"
 #include "ray.h"
 
 /**
@@ -29,6 +30,11 @@ public:
         lower_left_corner = origin - half_width * u - half_height * v - w;
         horizontal = 2 * half_width * u;
         vertical = 2 * half_height * v;
+
+        // Inicialização dos membros scale, offsetX e offsetY
+        scale = 1.0;
+        offsetX = 0;
+        offsetY = 0;
     }
 
     /**
@@ -42,7 +48,38 @@ public:
         return Ray(origin, lower_left_corner + s * horizontal + t * vertical - origin);
     }
 
+    /**
+     * @brief Retorna o fator de escala da câmera.
+     * 
+     * @return double Fator de escala da câmera.
+     */
+    double getScale() const { 
+        return scale; 
+    }
+
+    /**
+     * @brief Retorna o deslocamento horizontal da câmera.
+     * 
+     * @return double Deslocamento horizontal da câmera.
+     */
+    double getOffsetX() const { 
+        return offsetX; 
+    }
+
+    /**
+     * @brief Retorna o deslocamento vertical da câmera.
+     * 
+     * @return double Deslocamento vertical da câmera.
+     */
+    double getOffsetY() const { 
+        return offsetY; 
+    }
+
 private:
+    // membros privados e outras funções da classe
+    double scale;
+    double offsetX;
+    double offsetY;
     Vec3 origin;
     Vec3 lower_left_corner;
     Vec3 horizontal;
