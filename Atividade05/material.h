@@ -5,18 +5,23 @@
 #include "hitable.h"
 
 /**
- * @brief Classe abstrata para definir um material de um objeto.
+ * @class Material
+ * @brief Classe abstrata que define a interface para materiais.
+ * 
+ * Esta classe serve como base para todos os materiais no sistema de ray tracing, 
+ * definindo a função scatter que é responsável por determinar como os raios interagem 
+ * com a superfície do material.
  */
 class Material {
 public:
     /**
-     * @brief Função para calcular o espalhamento de um raio em um material.
+     * @brief Método virtual puro para calcular o espalhamento de um raio ao atingir o material.
      * 
-     * @param r_in Raio incidente.
-     * @param rec Registro de colisão.
-     * @param attenuation Atenuação do raio.
-     * @param scattered Raio espalhado.
-     * @return true Se ocorreu espalhamento, false caso contrário.
+     * @param r_in O raio incidente.
+     * @param rec Um registro contendo detalhes do ponto de interseção.
+     * @param attenuation A atenuação da cor do raio após atingir o material.
+     * @param scattered O raio espalhado resultante.
+     * @return bool Indica se o raio foi espalhado.
      */
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const = 0;
 };

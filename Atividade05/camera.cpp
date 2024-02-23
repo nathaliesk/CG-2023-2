@@ -1,67 +1,42 @@
 #include "camera.h"
+#include <cmath> // Necessário para operações matemáticas como tan() e M_PI
 
 /**
- * @brief Construtor da classe Camera.
+ * @brief Construtor da classe Camera, inicializa a câmera com parâmetros específicos.
+ * 
+ * Configura a posição, orientação, campo de visão vertical (vfov), e a razão de aspecto (aspect) da câmera.
+ * Calcula a base ortonormal para a câmera e o canto inferior esquerdo da visão da câmera.
  * 
  * @param lookfrom Posição da câmera.
  * @param lookat Ponto para onde a câmera está olhando.
  * @param vup Vetor de "cima" da câmera.
  * @param vfov Campo de visão vertical em graus.
- * @param aspect Aspect ratio da imagem.
+ * @param aspect Razão de aspecto da imagem.
  */
-Camera::Camera(Vec3 lookfrom, Vec3 lookat, Vec3 vup, double vfov, double aspect) {
-    Vec3 u, v, w;
+Camera::Camera(const Vec3& lookfrom, const Vec3& lookat, const Vec3& vup, double vfov, double aspect) {
     double theta = vfov * M_PI / 180;
     double half_height = tan(theta / 2);
     double half_width = aspect * half_height;
+
     origin = lookfrom;
-    w = unit_vector(lookfrom - lookat);
-    u = unit_vector(cross(vup, w));
-    v = cross(w, u);
+    Vec3 w = unit_vector(lookfrom - lookat);
+    Vec3 u = unit_vector(cross(vup, w));
+    Vec3 v = cross(w, u);
+
     lower_left_corner = origin - half_width * u - half_height * v - w;
     horizontal = 2 * half_width * u;
     vertical = 2 * half_height * v;
-
-    // Inicialização dos membros scale, offsetX e offsetY
-    scale = 1.0;
-    offsetX = 0;
-    offsetY = 0;
 }
 
 /**
- * @brief Calcula o raio a partir da câmera.
+ * @brief Calcula e retorna um raio que passa por um ponto específico da imagem vista pela câmera.
  * 
- * @param s Parâmetro horizontal.
- * @param t Parâmetro vertical.
- * @return Ray Raio resultante.
+ * Este método utiliza as coordenadas normalizadas (s, t) do pixel na imagem para calcular o raio.
+ * 
+ * @param s Coordenada horizontal normalizada do pixel.
+ * @param t Coordenada vertical normalizada do pixel.
+ * @return Ray O raio calculado a partir da câmera através do pixel especificado.
  */
 Ray Camera::get_ray(double s, double t) const {
     return Ray(origin, lower_left_corner + s * horizontal + t * vertical - origin);
-}
-
-/**
- * @brief Retorna o fator de escala da câmera.
- * 
- * @return double Fator de escala da câmera.
- */
-double Camera::getScale() const { 
-    return scale; 
-}
-
-/**
- * @brief Retorna o deslocamento horizontal da câmera.
- * 
- * @return double Deslocamento horizontal da câmera.
- */
-double Camera::getOffsetX() const { 
-    return offsetX; 
-}
-
-/**
- * @brief Retorna o deslocamento vertical da câmera.
- * 
- * @return double Deslocamento vertical da câmera.
- */
-double Camera::getOffsetY() const { 
-    return offsetY; 
 }

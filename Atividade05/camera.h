@@ -1,89 +1,44 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "vec3.h"
 #include "ray.h"
+#include "vec3.h"
 
 /**
- * @brief Classe para representar uma câmera.
+ * @class Camera
+ * @brief Classe que representa uma câmera no contexto de ray tracing.
+ * 
+ * Esta classe é responsável por configurar a posição e orientação da câmera na cena, assim como calcular os raios
+ * que são lançados a partir da câmera para os pixels na imagem.
  */
 class Camera {
 public:
     /**
-     * @brief Construtor da classe Camera.
+     * @brief Construtor que configura a câmera.
      * 
-     * @param lookfrom Posição da câmera.
-     * @param lookat Ponto para onde a câmera está olhando.
-     * @param vup Vetor de "cima" da câmera.
-     * @param vfov Campo de visão vertical em graus.
-     * @param aspect Aspect ratio da imagem.
+     * @param lookfrom A posição da câmera na cena.
+     * @param lookat O ponto para o qual a câmera está olhando.
+     * @param vup Um vetor que representa a direção "para cima" no espaço da cena.
+     * @param vfov O campo de visão vertical da câmera em graus.
+     * @param aspect A razão de aspecto da imagem (largura / altura).
      */
-    Camera(Vec3 lookfrom, Vec3 lookat, Vec3 vup, double vfov, double aspect) {
-        Vec3 u, v, w;
-        double theta = vfov * M_PI / 180;
-        double half_height = tan(theta / 2);
-        double half_width = aspect * half_height;
-        origin = lookfrom;
-        w = unit_vector(lookfrom - lookat);
-        u = unit_vector(cross(vup, w));
-        v = cross(w, u);
-        lower_left_corner = origin - half_width * u - half_height * v - w;
-        horizontal = 2 * half_width * u;
-        vertical = 2 * half_height * v;
-
-        // Inicialização dos membros scale, offsetX e offsetY
-        scale = 1.0;
-        offsetX = 0;
-        offsetY = 0;
-    }
+    Camera(const Vec3& lookfrom, const Vec3& lookat, const Vec3& vup, double vfov, double aspect);
 
     /**
-     * @brief Calcula o raio a partir da câmera.
+     * @brief Calcula e retorna um raio que passa de um ponto específico da câmera através de um pixel na imagem.
      * 
-     * @param s Parâmetro horizontal.
-     * @param t Parâmetro vertical.
-     * @return Ray Raio resultante.
+     * @param s A coordenada horizontal normalizada do pixel na imagem.
+     * @param t A coordenada vertical normalizada do pixel na imagem.
+     * @return Ray O raio calculado a partir da posição da câmera através do pixel especificado.
      */
-    Ray get_ray(double s, double t) const {
-        return Ray(origin, lower_left_corner + s * horizontal + t * vertical - origin);
-    }
-
-    /**
-     * @brief Retorna o fator de escala da câmera.
-     * 
-     * @return double Fator de escala da câmera.
-     */
-    double getScale() const { 
-        return scale; 
-    }
-
-    /**
-     * @brief Retorna o deslocamento horizontal da câmera.
-     * 
-     * @return double Deslocamento horizontal da câmera.
-     */
-    double getOffsetX() const { 
-        return offsetX; 
-    }
-
-    /**
-     * @brief Retorna o deslocamento vertical da câmera.
-     * 
-     * @return double Deslocamento vertical da câmera.
-     */
-    double getOffsetY() const { 
-        return offsetY; 
-    }
+    Ray get_ray(double s, double t) const;
 
 private:
-    // membros privados e outras funções da classe
-    double scale;
-    double offsetX;
-    double offsetY;
-    Vec3 origin;
-    Vec3 lower_left_corner;
-    Vec3 horizontal;
-    Vec3 vertical;
+    Vec3 origin; // A posição da câmera.
+    Vec3 lower_left_corner; // O canto inferior esquerdo da área de visualização.
+    Vec3 horizontal; // A largura da área de visualização.
+    Vec3 vertical; // A altura da área de visualização.
+    // Mais atributos podem ser necessários dependendo da implementação específica da câmera.
 };
 
 #endif // CAMERA_H

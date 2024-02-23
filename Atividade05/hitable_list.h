@@ -4,32 +4,34 @@
 #include "hitable.h"
 
 /**
- * @brief Classe para representar uma lista de objetos hitables.
+ * @class HitableList
+ * @brief Representa uma lista de objetos que podem ser atingidos por raios.
+ * 
+ * Esta classe é uma coleção de objetos derivados da interface Hitable. Ela permite que um raio teste a interseção
+ * com vários objetos na cena de uma vez, retornando informações sobre o ponto de interseção mais próximo, se houver.
  */
 class HitableList : public Hitable {
 public:
-    /**
-     * @brief Construtor da classe HitableList.
-     * 
-     * @param list Lista de ponteiros para objetos hitables.
-     * @param size Tamanho da lista.
-     */
-    HitableList(Hitable **list, int size) : list_(list), size_(size) {}
+    HitableList() : list(nullptr), list_size(0) {}
+    HitableList(Hitable** l, int n) : list(l), list_size(n) {}
+    virtual ~HitableList();
 
     /**
-     * @brief Função para determinar se um raio atinge algum objeto na lista.
+     * @brief Testa se um raio atinge algum dos objetos na lista.
      * 
-     * @param r Raio a ser verificado.
-     * @param t_min Parâmetro de tempo mínimo.
-     * @param t_max Parâmetro de tempo máximo.
-     * @param rec Registro de colisão.
-     * @return true Se o raio atinge algum objeto, false caso contrário.
+     * Percorre cada objeto na lista e verifica se o raio atinge. Retorna verdadeiro se pelo menos um objeto for atingido.
+     * 
+     * @param r O raio sendo testado.
+     * @param t_min O valor mínimo de t para considerar uma interseção válida.
+     * @param t_max O valor máximo de t para considerar uma interseção válida.
+     * @param rec Estrutura para armazenar os detalhes da interseção mais próxima.
+     * @return bool Verdadeiro se o raio atingir qualquer objeto na lista, falso caso contrário.
      */
     virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const override;
 
 private:
-    Hitable **list_; ///< Lista de ponteiros para objetos hitables.
-    int size_;       ///< Tamanho da lista.
+    Hitable **list; ///< Ponteiro para um array de ponteiros para objetos Hitable.
+    int list_size;  ///< Tamanho da lista de objetos Hitable.
 };
 
 #endif // HITABLE_LIST_H
