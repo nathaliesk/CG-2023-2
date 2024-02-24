@@ -14,8 +14,17 @@ public:
      * @param albedo Cor do material.
      * @param fuzziness Fator de desfoque (0 para sem desfoque).
      */
-    MaterialMetal(const Vec3& albedo, double fuzziness) : albedo_(albedo), fuzziness_(fuzziness < 1 ? fuzziness : 1) {}
+    MaterialMetal(const Vec3& albedo, double fuzziness);
 
+    /**
+     * @brief Calcula a dispersão do raio ao interagir com o material metálico.
+     * 
+     * @param r_in Raio de entrada.
+     * @param rec Registro de colisão.
+     * @param attenuation Atenuação do raio.
+     * @param scattered Raio disperso.
+     * @return true Se houver interação, false caso contrário.
+     */
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
 
 private:

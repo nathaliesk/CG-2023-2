@@ -1,13 +1,22 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "vec3.h"
 #include "ray.h"
+#include <cmath>
 
 /**
  * @brief Classe para representar uma câmera.
  */
 class Camera {
 public:
+    /**
+     * @brief Construtor padrão.
+     * 
+     * Inicializa a câmera com valores padrão.
+     */
+    Camera() {}
+    
     /**
      * @brief Construtor da classe Camera.
      * 
@@ -29,6 +38,11 @@ public:
         lower_left_corner = origin - half_width * u - half_height * v - w;
         horizontal = 2 * half_width * u;
         vertical = 2 * half_height * v;
+
+        // Inicialização dos membros scale, offsetX e offsetY
+        scale = 1.0;
+        offsetX = 0;
+        offsetY = 0;
     }
 
     /**
@@ -42,11 +56,41 @@ public:
         return Ray(origin, lower_left_corner + s * horizontal + t * vertical - origin);
     }
 
+    /**
+     * @brief Retorna o fator de escala da câmera.
+     * 
+     * @return double Fator de escala da câmera.
+     */
+    double getScale() const { 
+        return scale; 
+    }
+
+    /**
+     * @brief Retorna o deslocamento horizontal da câmera.
+     * 
+     * @return double Deslocamento horizontal da câmera.
+     */
+    double getOffsetX() const { 
+        return offsetX; 
+    }
+
+    /**
+     * @brief Retorna o deslocamento vertical da câmera.
+     * 
+     * @return double Deslocamento vertical da câmera.
+     */
+    double getOffsetY() const { 
+        return offsetY; 
+    }
+
 private:
-    Vec3 origin;
-    Vec3 lower_left_corner;
-    Vec3 horizontal;
-    Vec3 vertical;
+    double scale; /**< Fator de escala da câmera */
+    double offsetX; /**< Deslocamento horizontal da câmera */
+    double offsetY; /**< Deslocamento vertical da câmera */
+    Vec3 origin; /**< Posição da câmera */
+    Vec3 lower_left_corner; /**< Canto inferior esquerdo da imagem */
+    Vec3 horizontal; /**< Vetor horizontal da imagem */
+    Vec3 vertical; /**< Vetor vertical da imagem */
 };
 
 #endif // CAMERA_H

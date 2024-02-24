@@ -1,5 +1,21 @@
 #include "material_glass.h"
 
+/**
+ * @brief Construtor da classe MaterialGlass.
+ * 
+ * @param ri Índice de refração do material de vidro.
+ */
+MaterialGlass::MaterialGlass(double ri) : refraction_idx_(ri) {}
+
+/**
+ * @brief Calcula a dispersão do raio ao interagir com o material de vidro.
+ * 
+ * @param r_in Raio de entrada.
+ * @param rec Registro de colisão.
+ * @param attenuation Atenuação do raio.
+ * @param scattered Raio disperso.
+ * @return true Se houver interação, false caso contrário.
+ */
 bool MaterialGlass::scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
     attenuation = Vec3(1.0, 1.0, 1.0);
     double refraction_ratio = rec.front_face ? (1.0 / refraction_idx_) : refraction_idx_;

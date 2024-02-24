@@ -13,8 +13,17 @@ public:
      * 
      * @param refraction_idx Índice de refração do material.
      */
-    MaterialGlass(double refraction_idx) : refraction_idx_(refraction_idx) {}
+    MaterialGlass(double refraction_idx);
 
+    /**
+     * @brief Calcula a dispersão do raio ao interagir com o material de vidro.
+     * 
+     * @param r_in Raio de entrada.
+     * @param rec Registro de colisão.
+     * @param attenuation Atenuação do raio.
+     * @param scattered Raio disperso.
+     * @return true Se houver interação, false caso contrário.
+     */
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
 
 private:

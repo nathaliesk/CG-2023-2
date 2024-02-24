@@ -1,5 +1,15 @@
 #include "sphere.h"
+#include "hit_record.h"
 
+/**
+ * @brief Verifica se há interseção entre um raio e a esfera.
+ * 
+ * @param r Raio a ser verificado.
+ * @param t_min Parâmetro mínimo do raio.
+ * @param t_max Parâmetro máximo do raio.
+ * @param rec Registro de colisão, se houver interseção.
+ * @return true Se houve interseção, false caso contrário.
+ */
 bool Sphere::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const {
     Vec3 oc = r.origin() - center;
     double a = dot(r.direction(), r.direction());
